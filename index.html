@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0F172A">
+  <meta name="description" content="HR HABIB Downloader — download video or audio from YouTube, Facebook, Instagram and Pinterest.">
+  <title>HR HABIB Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #E11D48;
+      --color-on-primary: #FFFFFF;
+      --color-secondary: #FB7185;
+      --color-accent: #2563EB;
+      --color-on-accent: #FFFFFF;
+      --color-background: #0F172A;
+      --color-foreground: #F8FAFC;
+      --color-card: #111827;
+      --color-card-foreground: #F8FAFC;
+      --color-muted: #1E293B;
+      --color-muted-foreground: #CBD5E1;
+      --color-border: #334155;
+      --color-ring: #E11D48;
+      --color-success: #10B981;
+      --color-success-bg: rgba(16, 185, 129, 0.12);
+      --color-error: #EF4444;
+      --color-error-bg: rgba(239, 68, 68, 0.12);
+      --radius: 16px;
+      --shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.5);
+      --font: "Inter", system-ui, -apple-system, sans-serif;
+      --transition: 180ms ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--color-foreground);
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(225, 29, 72, 0.18), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(37, 99, 235, 0.12), transparent),
+        var(--color-background);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--color-primary), #BE123C);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: white;
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brand-name span { color: var(--color-secondary); }
+
+    .card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: calc(var(--radius) + 4px);
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-muted-foreground);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.75rem, 6vw, 2.125rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    h1 .grad {
+      background: linear-gradient(105deg, #FB7185 0%, #E11D48 40%, #2563EB 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      margin: 0 0 24px;
+      color: var(--color-muted-foreground);
+      font-size: 15px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-muted-foreground);
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 14px 16px;
+      font: inherit;
+      font-size: 15px;
+      color: var(--color-foreground);
+      background: var(--color-muted);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .field input::placeholder { color: #64748B; }
+
+    .field input:hover,
+    .field select:hover {
+      border-color: #475569;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--color-ring);
+      box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.25);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 48px;
+      padding: 14px 20px;
+      margin-top: 8px;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--color-on-primary);
+      background: linear-gradient(105deg, #E11D48, #BE123C 60%, #9F1239);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform var(--transition), filter var(--transition), opacity var(--transition);
+    }
+
+    .btn:hover:not(:disabled) {
+      filter: brightness(1.08);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--color-ring);
+      outline-offset: 3px;
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-download {
+      background: linear-gradient(105deg, #059669, #047857);
+      color: #fff;
+    }
+
+    .btn-download:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .status {
+      display: none;
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .status.show { display: block; }
+
+    .status.error {
+      background: var(--color-error-bg);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #FCA5A5;
+    }
+
+    .status.success {
+      background: var(--color-success-bg);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #6EE7B7;
+    }
+
+    .status.success strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 15px;
+      color: #A7F3D0;
+    }
+
+    .status .filename {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #94A3B8;
+      word-break: break-all;
+    }
+
+    .note {
+      margin: 20px 0 0;
+      font-size: 12px;
+      line-height: 1.55;
+      color: #64748B;
+    }
+
+    .platforms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 20px;
+    }
+
+    .platforms span {
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--color-muted-foreground);
+      background: var(--color-muted);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+    }
+
+    .foot {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748B;
+    }
+
+    @media (max-width: 420px) {
+      .row { grid-template-columns: 1fr; }
+      .card { padding: 22px 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">HR</div>
+      <div class="brand-name">HR <span>HABIB</span></div>
+    </div>
+
+    <section class="card" aria-labelledby="title">
+      <p class="eyebrow">All-in-one media tool</p>
+      <h1 id="title">Download <span class="grad">Anything.</span></h1>
+      <p class="lead">Paste a public link. Get video or audio in seconds.</p>
+
+      <div class="platforms" aria-label="Supported platforms">
+        <span>YouTube</span>
+        <span>Facebook</span>
+        <span>Instagram</span>
+        <span>Pinterest</span>
+      </div>
+
+      <form id="form" novalidate>
+        <div class="field">
+          <label for="url">Media URL</label>
+          <input
+            id="url"
+            name="url"
+            type="url"
+            inputmode="url"
+            autocomplete="off"
+            placeholder="https://www.youtube.com/watch?v=…"
+            required
+            aria-required="true"
+          >
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="mode">Type</label>
+            <select id="mode" name="mode">
+              <option value="video">Video</option>
+              <option value="audio">Audio only</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="quality">Quality</label>
+            <select id="quality" name="quality">
+              <option value="max">Best available</option>
+              <option value="1080">1080p</option>
+              <option value="720">720p</option>
+              <option value="480">480p</option>
+              <option value="360">360p</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn" id="go">
+          <span id="go-label">Get Download Link</span>
+        </button>
+      </form>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+
+      <p class="note">
+        Only download media you own or are authorized to save.
+        Availability depends on platform rules and provider support.
+      </p>
+    </section>
+
+    <p class="foot">Made by SK HABIBULLA · Developer HR HABIB</p>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById("form");
+      const urlInput = document.getElementById("url");
+      const modeSelect = document.getElementById("mode");
+      const qualitySelect = document.getElementById("quality");
+      const goBtn = document.getElementById("go");
+      const goLabel = document.getElementById("go-label");
+      const statusEl = document.getElementById("status");
+
+      function setStatus(type, html) {
+        statusEl.className = "status show " + type;
+        statusEl.innerHTML = html;
+      }
+
+      function clearStatus() {
+        statusEl.className = "status";
+        statusEl.innerHTML = "";
+      }
+
+      function setLoading(loading) {
+        goBtn.disabled = loading;
+        if (loading) {
+          goLabel.innerHTML = '<span class="spinner" aria-hidden="true"></span> Processing…';
+        } else {
+          goLabel.textContent = "Get Download Link";
+        }
+      }
+
+      function forceDownload(fileUrl, filename) {
+        // Prefer native download attribute when same-origin or permitted.
+        // For cross-origin Cobalt tunnel URLs, open in a way that triggers the browser download dialog.
+        const a = document.createElement("a");
+        a.href = fileUrl;
+        a.download = filename || "download";
+        a.rel = "noopener";
+        a.target = "_blank";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        clearStatus();
+
+        const url = (urlInput.value || "").trim();
+        if (!url) {
+          setStatus("error", "Please paste a media URL.");
+          urlInput.focus();
+          return;
+        }
+
+        setLoading(true);
+
+        try {
+          const res = await fetch("/api/download", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              url: url,
+              mode: modeSelect.value,
+              quality: qualitySelect.value
+            })
+          });
+
+          const data = await res.json().catch(function () { return {}; });
+
+          if (!res.ok || !data.ok) {
+            throw new Error(data.error || "Request failed. Please try again.");
+          }
+
+          if (!data.url) {
+            throw new Error("Provider did not return a direct download link.");
+          }
+
+          const filename = data.filename || "download";
+
+          setStatus(
+            "success",
+            "<strong>Media is ready</strong>" +
+            '<span class="filename">' + escapeHtml(filename) + "</span>" +
+            '<button type="button" class="btn btn-download" id="download-now">' +
+            "Download Now" +
+            "</button>"
+          );
+
+          const dlBtn = document.getElementById("download-now");
+          dlBtn.addEventListener("click", function () {
+            forceDownload(data.url, filename);
+          });
+
+          // Auto-start download once so the user gets the file immediately
+          forceDownload(data.url, filename);
+
+        } catch (err) {
+          setStatus("error", escapeHtml(err.message || "Something went wrong."));
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+    })();
+  </script>
+</body>
+</html>
